@@ -20,5 +20,9 @@ namespace Si.CoreHub.Utility
             get => _configuration ?? throw new InvalidOperationException("Configuration is not set.");
             set => _configuration = value;
         }
+        public static void SetServiceProvider(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
     }
 }
