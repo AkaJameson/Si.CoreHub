@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +10,7 @@ namespace Si.CoreHub.Package.Core
     public static class PackLoader
     {
         internal static Dictionary<string, PackBase> _packs = new Dictionary<string, PackBase>();
-        public static void LoadPack(IServiceCollection services, ModuleInfo moduleInfo)
+        public static void LoadPack(WebApplicationBuilder builder, ModuleInfo moduleInfo)
         {
             if (moduleInfo?.Assembly == null)
             {
@@ -26,14 +27,15 @@ namespace Si.CoreHub.Package.Core
                 return;
             }
             _packs.TryAdd(moduleInfo.AssemblyName, packInstance);
-            services.AddControllers().AddApplicationPart(moduleInfo.Assembly);
+            var partManager = builder.Services.AddMvcCore();
+            partManager.AddApplicationPart(moduleInfo.Assembly); // 添加插件程序集
             if (!File.Exists(moduleInfo.ConfigFile))
             {
                 return;
             }
-            var builder = new ConfigurationBuilder().AddJsonFile(moduleInfo.ConfigFile, optional: true, reloadOnChange: true);
-            PackConfigurationProvider.LoadConfiguration(moduleInfo!.Assembly!.GetName().Name, builder.Build());
-            packInstance.ConfigurationServices(services);
+            var Configurationbuilder = new ConfigurationBuilder().AddJsonFile(moduleInfo.ConfigFile, optional: true, reloadOnChange: true);
+            PackConfigurationProvider.LoadConfiguration(moduleInfo!.Assembly!.GetName().Name, Configurationbuilder.Build());
+            packInstance.ConfigurationServices(builder,builder.Services);
         }
 
         public static void UsePack(IApplicationBuilder app, IServiceProvider serviceProvider, IEndpointRouteBuilder routes)

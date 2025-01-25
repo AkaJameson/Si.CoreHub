@@ -67,15 +67,15 @@ namespace Si.CoreHub.Extension
         /// </summary>
         /// <param name="services"></param>
         /// <param name="options"></param>
-        public static void AddPackages(this IServiceCollection services, Action<PackOptions> options)
+        public static void AddPackages(this WebApplicationBuilder builder, Action<PackOptions> options)
         {
             var packOptions = new PackOptions();
             options(packOptions);
             PackageManager finder = new PackageManager(packOptions);
-            services.AddScoped(typeof(IPackConfiguration<>), typeof(PackConfiguration<>));
+            builder.Services.AddScoped(typeof(IPackConfiguration<>), typeof(PackConfiguration<>));
             foreach (var package in finder.GetPacks())
             {
-                PackLoader.LoadPack(services, package);
+                PackLoader.LoadPack(builder, package);
             }
         }
         /// <summary>
