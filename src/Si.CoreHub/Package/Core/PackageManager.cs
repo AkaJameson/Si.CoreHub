@@ -1,4 +1,5 @@
-﻿using Si.CoreHub.Package.Entitys;
+﻿using Si.CoreHub.Logs;
+using Si.CoreHub.Package.Entitys;
 using System.Reflection;
 
 namespace Si.CoreHub.Package.Core
@@ -29,16 +30,24 @@ namespace Si.CoreHub.Package.Core
             var moduleDirs = Directory.GetDirectories(_packOptions.FilePath);
             foreach (var moduleDir in moduleDirs)
             {
-                string fileName = Path.GetFileName(moduleDir);
-                var moduleInfo = new ModuleInfo();
-                moduleInfo.AssemblyName = fileName + ".dll";
-                moduleInfo.AssemblyPath = Path.Combine(_packOptions.FilePath, fileName, $"{fileName}.dll");
-                var assembly = Assembly.LoadFrom(moduleInfo.AssemblyPath);
-                if (assembly == null)
+                try
+                {
+                    string fileName = Path.GetFileName(moduleDir);
+                    var moduleInfo = new ModuleInfo();
+                    moduleInfo.AssemblyName = fileName + ".dll";
+                    moduleInfo.AssemblyPath = Path.Combine(_packOptions.FilePath, fileName, $"{fileName}.dll");
+                    var assembly = Assembly.LoadFrom(moduleInfo.AssemblyPath);
+                    if (assembly == null)
+                        continue;
+                    moduleInfo.Assembly = assembly;
+                    moduleInfo.ConfigFile = Path.Combine(_packOptions.FilePath, fileName, $"{fileName}.json");
+                    _modules.Add(moduleInfo);
+                }
+                catch (Exception ex)
+                {
+                    LogCenter.Write2Log(Loglevel.Error, ex.Message +ex.StackTrace);
                     continue;
-                moduleInfo.Assembly = assembly;
-                moduleInfo.ConfigFile = Path.Combine(_packOptions.FilePath, fileName, $"{fileName}.json");
-                _modules.Add(moduleInfo);
+                }
             }
             return _modules;
         }

@@ -6,7 +6,7 @@ using Serilog.Events;
 
 namespace Si.CoreHub.Logs
 {
-    public static class LogSetting
+    public static class LogCenter
     {
         internal static Dictionary<Loglevel, Logger> _loggers = new Dictionary<Loglevel, Logger>();
         internal static int _lock = 0;
@@ -71,22 +71,26 @@ namespace Si.CoreHub.Logs
         /// <param name="message">日志信息</param>
         internal static void Write2Log(Loglevel level, string message)
         {
-            switch (level)
+            //只有初始化完成后才能输出日志
+            if(_lock == 1)
             {
-                case Loglevel.Info:
-                    _loggers[Loglevel.Info].Information(message);
-                    break;
-                case Loglevel.Error:
-                    _loggers[Loglevel.Error].Error(message);
-                    break;
-                case Loglevel.Fatal:
-                    _loggers[Loglevel.Fatal].Fatal(message);
-                    break;
-                case Loglevel.Warning:
-                    _loggers[Loglevel.Warning].Warning(message);
-                    break;
-                default:
-                    break;
+                switch (level)
+                {
+                    case Loglevel.Info:
+                        _loggers[Loglevel.Info].Information(message);
+                        break;
+                    case Loglevel.Error:
+                        _loggers[Loglevel.Error].Error(message);
+                        break;
+                    case Loglevel.Fatal:
+                        _loggers[Loglevel.Fatal].Fatal(message);
+                        break;
+                    case Loglevel.Warning:
+                        _loggers[Loglevel.Warning].Warning(message);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         /// <summary>
@@ -94,7 +98,7 @@ namespace Si.CoreHub.Logs
         /// </summary>
         /// <param name="Host"></param>
         /// <param name="filePath"></param>
-        public static void UseLog(this IHostBuilder Host, string filePath)
+        public static void ConfiguraSystemHub(this IHostBuilder Host, string filePath)
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(Path.Combine(filePath, "System-.log"), rollingInterval: RollingInterval.Day)

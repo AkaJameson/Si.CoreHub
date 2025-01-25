@@ -41,19 +41,22 @@ namespace Si.CoreHub.EventBus
 
         public async Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
         {
-            var message = JsonSerializer.Serialize(@event);
-            var body = Encoding.UTF8.GetBytes(message);
+            await Task.Run(() =>
+            {
+                var message = JsonSerializer.Serialize(@event);
+                var body = Encoding.UTF8.GetBytes(message);
 
-            var properties = _channel.CreateBasicProperties();
-            properties.Persistent = true;
+                var properties = _channel.CreateBasicProperties();
+                properties.Persistent = true;
 
-            _channel.BasicPublish(
-                exchange: _exchangeName,
-                routingKey: "",
-                basicProperties: properties,
-                body: body);
+                _channel.BasicPublish(
+                    exchange: _exchangeName,
+                    routingKey: "",
+                    basicProperties: properties,
+                    body: body);
 
-            _logger.LogInformation($"Event published: {typeof(TEvent).Name} with ID {@event.Id}");
+                _logger.LogInformation($"Event published: {typeof(TEvent).Name} with ID {@event.Id}");
+            });
         }
 
         public IDisposable Subscribe<TEvent>(Func<TEvent, Task> handler, int priority = 0) where TEvent : IEvent

@@ -62,7 +62,7 @@ namespace Si.CoreHub.Utility
         /// </summary>
         public static void Init()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve!;
             _allAssemblies = DependencyContext.Default.GetDefaultAssemblyNames()
                   .Where(AssemblyFilterFunc).Select(Assembly.Load).ToArray();
             _allTypes = _allAssemblies.SelectMany(m => m.GetTypes()).ToArray();

@@ -5,21 +5,21 @@
     {
         public void Info(string message)
         {
-            LogSetting.Write2Log(Loglevel.Info, message);
+            LogCenter.Write2Log(Loglevel.Info, message);
         }
 
         public void Error(string message)
         {
-            LogSetting.Write2Log(Loglevel.Error, message);
+            LogCenter.Write2Log(Loglevel.Error, message);
         }
 
         public void Warn(string message)
         {
-            LogSetting.Write2Log(Loglevel.Warning, message);
+            LogCenter.Write2Log(Loglevel.Warning, message);
         }
         public void Fatal(string message)
         {
-            LogSetting.Write2Log(Loglevel.Fatal, message);
+            LogCenter.Write2Log(Loglevel.Fatal, message);
         }
     }
 }
