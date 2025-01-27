@@ -18,6 +18,16 @@
                 Data = data
             };
         }
+
+        public static Result Successed(string message = "请求成功")
+        {
+            return new Result
+            {
+                Success = true,
+                Message = message,
+                Data = null
+            };
+        }
         public static Result Failed(string message = "请求失败")
         {
             return new Result()
