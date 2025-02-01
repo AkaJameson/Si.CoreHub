@@ -34,7 +34,7 @@ namespace Si.CoreHub.Package.Core
                 return;
             }
             var Configurationbuilder = new ConfigurationBuilder().AddJsonFile(moduleInfo.ConfigFile, optional: true, reloadOnChange: true);
-            PackConfigurationProvider.LoadConfiguration(moduleInfo!.Assembly!.GetName().Name, Configurationbuilder.Build());
+            PackConfigurationProvider.RegisterConfiguration(moduleInfo!.Assembly!.GetName().Name, Configurationbuilder.Build());
             packInstance.ConfigurationServices(builder,builder.Services);
         }
 
