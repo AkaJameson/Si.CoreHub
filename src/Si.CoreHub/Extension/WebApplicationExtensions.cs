@@ -5,13 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Si.CoreHub.EventBus;
-using Si.CoreHub.EventBus.Abstraction;
 using Si.CoreHub.EventBus.Entitys;
+using Si.CoreHub.Logs;
 using Si.CoreHub.MemoryCache;
 using Si.CoreHub.Package.Abstraction;
 using Si.CoreHub.Package.Core;
 using Si.CoreHub.Package.Entitys;
-using Si.CoreHub.Utility;
 using System.Net;
 
 namespace Si.CoreHub.Extension
@@ -77,6 +76,7 @@ namespace Si.CoreHub.Extension
             {
                 PackLoader.LoadPack(builder, package);
             }
+            LogCenter.Write2Log(Loglevel.Info, $"加载包完成,{finder.GetPacks().ToJson()}");
         }
         /// <summary>
         /// 注册包

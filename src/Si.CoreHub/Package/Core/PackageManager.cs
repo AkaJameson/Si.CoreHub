@@ -41,6 +41,10 @@ namespace Si.CoreHub.Package.Core
                         continue;
                     moduleInfo.Assembly = assembly;
                     moduleInfo.ConfigFile = Path.Combine(_packOptions.FilePath, fileName, $"{fileName}.json");
+                    if (!File.Exists(moduleInfo.ConfigFile))
+                    {
+                        throw new FileNotFoundException($"{moduleInfo.ConfigFile} not found");
+                    }
                     _modules.Add(moduleInfo);
                 }
                 catch (Exception ex)
@@ -68,8 +72,6 @@ namespace Si.CoreHub.Package.Core
             }
             return null;
         }
-
-
 
     }
 }
