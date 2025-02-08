@@ -12,7 +12,7 @@ namespace Si.CoreHub.Package.Core
             return configuration;
         }
 
-        public static void LoadConfiguration(string packName, IConfiguration configuration)
+        public static void RegisterConfiguration(string packName, IConfiguration configuration)
         {
             _packConfigurations.TryAdd(packName, configuration);
         }
