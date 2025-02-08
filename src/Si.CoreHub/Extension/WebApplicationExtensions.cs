@@ -76,7 +76,12 @@ namespace Si.CoreHub.Extension
             {
                 PackLoader.LoadPack(builder, package);
             }
-            LogCenter.Write2Log(Loglevel.Info, $"加载包完成,{finder.GetPacks().ToJson()}");
+            LogCenter.Write2Log(Loglevel.Info, $"加载包完成,{finder.GetPacks().Select(x => new
+            {
+                x.AssemblyName,
+                x.AssemblyPath,
+                x.ConfigFile
+            }).ToList().ToJson()}");
         }
         /// <summary>
         /// 注册包
