@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Si.CoreHub.EventBus;
 using Si.CoreHub.EventBus.Entitys;
+using Si.CoreHub.Extension;
 using Si.CoreHub.Logs;
 using Si.CoreHub.MemoryCache;
 using Si.CoreHub.Package.Abstraction;
@@ -13,9 +14,9 @@ using Si.CoreHub.Package.Core;
 using Si.CoreHub.Package.Entitys;
 using System.Net;
 
-namespace Si.CoreHub.Extension
+namespace Si.CoreHub
 {
-    public static class WebApplicationExtensions
+    public static class CoreHubStartUp
     {
         /// <summary>
         /// Kestrel配置

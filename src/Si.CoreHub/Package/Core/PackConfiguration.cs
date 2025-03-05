@@ -11,7 +11,7 @@ namespace Si.CoreHub.Package.Core
         public PackConfiguration()
         {
             var name = typeof(T).Assembly.GetName().Name;
-            _innerConfiguration = PackConfigurationProvider.GetConfiguration(name!);
+            _innerConfiguration = PackLoader.GetConfiguration(name!);
         }
 
         public string this[string key]

@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Si.CoreHub.Package.Entitys;
+using System.Collections.Concurrent;
 
 namespace Si.CoreHub.Package.Core
 {
-    public static class PackLoader
+    public static partial class PackLoader
     {
         internal static Dictionary<string, PackBase> _packs = new Dictionary<string, PackBase>();
+        private static readonly ConcurrentDictionary<string, IConfiguration> _packConfigurations = new ConcurrentDictionary<string, IConfiguration>();
+
         public static void LoadPack(WebApplicationBuilder builder, ModuleInfo moduleInfo)
         {
             if (moduleInfo?.Assembly == null)
@@ -33,13 +36,24 @@ namespace Si.CoreHub.Package.Core
                 return;
             }
             var Configurationbuilder = new ConfigurationBuilder().AddJsonFile(moduleInfo.ConfigFile, optional: true, reloadOnChange: true);
-            PackConfigurationProvider.RegisterConfiguration(moduleInfo!.Assembly!.GetName().Name, Configurationbuilder.Build());
-            packInstance.ConfigurationServices(builder,builder.Services);
+            PackLoader.RegisterConfiguration(moduleInfo!.Assembly!.GetName().Name, Configurationbuilder.Build());
+            packInstance.ConfigurationServices(builder, builder.Services);
         }
 
         public static void UsePack(IApplicationBuilder app, IServiceProvider serviceProvider, IEndpointRouteBuilder routes)
         {
             _packs.Values.ToList().ForEach(pack => pack.Configuration(app, routes, serviceProvider));
+        }
+
+        public static IConfiguration GetConfiguration(string packName)
+        {
+            _packConfigurations.TryGetValue(packName, out IConfiguration configuration);
+            return configuration;
+        }
+
+        public static void RegisterConfiguration(string packName, IConfiguration configuration)
+        {
+            _packConfigurations.TryAdd(packName, configuration);
         }
     }
 }
