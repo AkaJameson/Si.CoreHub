@@ -7,7 +7,7 @@ using Serilog;
 using Si.CoreHub.EventBus;
 using Si.CoreHub.EventBus.Entitys;
 using Si.CoreHub.Extension;
-using Si.CoreHub.Logs;
+using Si.CoreHub.Logging;
 using Si.CoreHub.MemoryCache;
 using Si.CoreHub.Package.Abstraction;
 using Si.CoreHub.Package.Core;
@@ -120,5 +120,24 @@ namespace Si.CoreHub
 
         }
 
+        /// <summary>
+        /// 注册模块化JSON本地化服务
+        /// </summary>
+        /// <param name="services">服务集合</param>
+        /// <returns>服务集合</returns>
+        public static IServiceCollection AddModuleJsonLocalization(this IServiceCollection services)
+        {
+            return services.AddModuleJsonLocalization();
+        }
+
+        /// <summary>
+        /// 使用模块化JSON本地化
+        /// </summary>
+        /// <param name="app">应用程序构建器</param>
+        /// <returns>应用程序构建器</returns>
+        public static IApplicationBuilder UseModuleJsonLocalization(this IApplicationBuilder app)
+        {
+            return app.UseModuleJsonLocalization();
+        }
     }
 }
