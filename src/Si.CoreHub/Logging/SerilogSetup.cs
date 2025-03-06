@@ -56,8 +56,8 @@ namespace Si.CoreHub.Logging
                         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")))
                 // System日志专门记录ASP.NET Core的日志
                 .WriteTo.Logger(lc => lc
-                    .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("SourceContext") && 
-                        (e.Properties["SourceContext"].ToString().Contains("Microsoft") || 
+                    .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("SourceContext") &&
+                        (e.Properties["SourceContext"].ToString().Contains("Microsoft") ||
                          e.Properties["SourceContext"].ToString().Contains("System")))
                     .WriteTo.Async(a => a.File(Path.Combine(datePath, "System-.log"),
                         rollingInterval: RollingInterval.Day,
