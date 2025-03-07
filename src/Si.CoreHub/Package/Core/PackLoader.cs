@@ -84,7 +84,6 @@ namespace Si.CoreHub.Package.Core
             {
                 LogCenter.Write2Log(Loglevel.Error, $"加载模块 {moduleInfo.AssemblyName} 失败: {ex.Message}\n{ex.StackTrace}");
                 moduleInfo.IsLoaded = false;
-                throw;
             }
         }
 
