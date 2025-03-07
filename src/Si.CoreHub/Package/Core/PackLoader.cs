@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Si.CoreHub.Localizer;
 using Si.CoreHub.Logging;
 using Si.CoreHub.Package.Entitys;
 using System.Collections.Concurrent;
@@ -74,8 +73,8 @@ namespace Si.CoreHub.Package.Core
                 // 调用模块的服务配置方法
                 packInstance.ConfigurationServices(builder, builder.Services);
 
-                // 预加载模块的本地化资源
-                LocalizerManager.LoadModuleResources(moduleInfo);
+                /*// 预加载模块的本地化资源
+                LocalizerManager.LoadModuleResources(moduleInfo);*/
 
                 LogCenter.Write2Log(Loglevel.Info, $"成功加载模块 {moduleInfo.AssemblyName}");
                 moduleInfo.IsLoaded = true;

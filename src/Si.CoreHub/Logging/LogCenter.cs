@@ -1,6 +1,4 @@
-﻿using Serilog.Core;
-
-namespace Si.CoreHub.Logging
+﻿namespace Si.CoreHub.Logging
 {
     public static class LogCenter
     {
@@ -10,22 +8,22 @@ namespace Si.CoreHub.Logging
             {
                 case Loglevel.Info:
                     {
-                        StaticLog.Info(message);
+                        SiLog.Info(message);
                         break;
                     }
                 case Loglevel.Fatal:
                     {
-                        StaticLog.Fatal(message);
+                        SiLog.Fatal(message);
                         break;
                     }
                 case Loglevel.Warning:
                     {
-                        StaticLog.Warning(message);
+                        SiLog.Warning(message);
                         break;
                     }
                 case Loglevel.Error:
                     {
-                        StaticLog.Error(message); 
+                        SiLog.Error(message); 
                         break;
                     }
 

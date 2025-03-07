@@ -1,58 +1,19 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 using Si.CoreHub.EventBus;
 using Si.CoreHub.EventBus.Entitys;
-using Si.CoreHub.Extension;
 using Si.CoreHub.Logging;
 using Si.CoreHub.MemoryCache;
 using Si.CoreHub.Package.Abstraction;
 using Si.CoreHub.Package.Core;
 using Si.CoreHub.Package.Entitys;
-using System.Net;
 
-namespace Si.CoreHub
+namespace Si.CoreHub.Extension
 {
-    public static class CoreHubStartUp
+    public static class StartUpExtension
     {
-        /// <summary>
-        /// Kestrel配置
-        /// </summary>
-        /// <param name="builder"></param>
-        public static void UseKestrel(this WebApplicationBuilder builder)
-        {
-            builder.WebHost.ConfigureKestrel(options =>
-            {
-                var kestrelConfig = builder.Configuration.GetSection("Kestrel");
-                var ipAddr = IPAddress.Parse(kestrelConfig.GetValue<string>("Url") ?? "0.0.0.0");
-                //https配置
-                var httpPort = kestrelConfig.GetValue<int>("Configuration:Http:Port");
-                options.Listen(ipAddr, httpPort);
-                var httpsPort = kestrelConfig.GetValue<int>("Configuration:Https:Port");
-                var certificatePath = kestrelConfig.GetValue<string>("Configuration:Https:Certificate:Path");
-                var certificatePassword = kestrelConfig.GetValue<string>("Configuration:Https:Certificate:Password");
-                if (!string.IsNullOrEmpty(certificatePath) && File.Exists(certificatePath))
-                {
-                    try
-                    {
-                        options.Listen(ipAddr, httpsPort, listenOptions =>
-                        {
-                            listenOptions.UseHttps(certificatePath, certificatePassword, httpsOptions =>
-                            {
-                                httpsOptions.AllowAnyClientCertificate();
-                            });
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Https配置失败");
-                    }
-                }
-            });
-        }
+        
         /// <summary>
         /// 注册缓存服务
         /// </summary>
@@ -118,26 +79,6 @@ namespace Si.CoreHub
             services.AddSingleton<EventBus.Abstraction.IEventBus, RabbitMqEventBus>();
             return services;
 
-        }
-
-        /// <summary>
-        /// 注册模块化JSON本地化服务
-        /// </summary>
-        /// <param name="services">服务集合</param>
-        /// <returns>服务集合</returns>
-        public static IServiceCollection AddModuleJsonLocalization(this IServiceCollection services)
-        {
-            return services.AddModuleJsonLocalization();
-        }
-
-        /// <summary>
-        /// 使用模块化JSON本地化
-        /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        /// <returns>应用程序构建器</returns>
-        public static IApplicationBuilder UseModuleJsonLocalization(this IApplicationBuilder app)
-        {
-            return app.UseModuleJsonLocalization();
         }
     }
 }

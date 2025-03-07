@@ -2,13 +2,13 @@
 
 namespace Si.CoreHub.Logging
 {
-    public class StaticLog
+    internal class SiLog
     {
         private static ReaderWriterLockSlim LogWriteLock = new ReaderWriterLockSlim();
 
         // 日志路径和文件名
-        private static readonly string logDirectory = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "Logs");
-        private static string logFileName = "StartupInfo.STD.txt";
+        private static readonly string logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Logs");
+        private static string logFileName = "XLog.txt";
         /// <summary>
         /// 输出 info 级别日志
         /// </summary>
