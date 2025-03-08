@@ -1,6 +1,4 @@
-﻿using MemoryPack;
-using Microsoft.Extensions.Logging;
-using Si.CoreHub.Logging;
+﻿using Si.CoreHub.Logging;
 using Si.CoreHub.Package.Entitys;
 using System.Reflection;
 
@@ -32,8 +30,7 @@ namespace Si.CoreHub.Package.Core
 
         public PackOptions GetPackOptions()
         {
-            byte[] bytes = MemoryPackSerializer.Serialize(_options);
-            return MemoryPackSerializer.Deserialize<PackOptions>(bytes);
+            return _options;
         }
         /// <summary>
         /// 模块加载事件

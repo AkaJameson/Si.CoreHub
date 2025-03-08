@@ -41,7 +41,7 @@ namespace Si.CoreHub.Package.Localizer
             var moduleDictionary = _resourcesCache.GetOrAdd(moduleName, _ => new ConcurrentDictionary<string, Dictionary<string, string>>());
             
             // 寻找所有JSON资源文件，约定文件名格式为：{模块名称}-{文化缩写}.json，如 ModuleA-zh-CN.json
-            var resourceFiles = Directory.GetFiles(resourcesPath, $"{moduleName}-*.json");
+            var resourceFiles = Directory.GetFiles(resourcesPath, $"{moduleName}.*.json");
             foreach (var resourceFile in resourceFiles)
             {
                 try
