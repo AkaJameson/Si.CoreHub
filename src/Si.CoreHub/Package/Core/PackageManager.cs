@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MemoryPack;
+using Microsoft.Extensions.Logging;
 using Si.CoreHub.Logging;
 using Si.CoreHub.Package.Entitys;
 using System.Reflection;
@@ -12,7 +13,6 @@ namespace Si.CoreHub.Package.Core
     {
         private readonly PackOptions _options;
         private readonly List<ModuleInfo> _modules = new List<ModuleInfo>();
-        private readonly ILogger _logger;
         private readonly object _modulesLock = new object();
         private bool _initialized = false;
 
@@ -28,9 +28,13 @@ namespace Si.CoreHub.Package.Core
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
             
             // 使用日志中心写入日志
-            _logger = new Logger<PackageManager>(new LoggerFactory());
         }
 
+        public PackOptions GetPackOptions()
+        {
+            byte[] bytes = MemoryPackSerializer.Serialize(_options);
+            return MemoryPackSerializer.Deserialize<PackOptions>(bytes);
+        }
         /// <summary>
         /// 模块加载事件
         /// </summary>

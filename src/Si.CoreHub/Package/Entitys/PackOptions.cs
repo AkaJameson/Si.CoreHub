@@ -42,6 +42,11 @@
         public bool PreloadAllModules { get; set; } = true;
 
         /// <summary>
+        /// 是否启用本地化支持
+        /// </summary>
+        public bool EnableLocaizor { get; set; } = false;
+
+        /// <summary>
         /// 模块配置文件名称格式
         /// 默认为 {模块名}.json
         /// </summary>
@@ -52,5 +57,7 @@
         /// 默认为 {模块名}.dll
         /// </summary>
         public string AssemblyFileFormat { get; set; } = "{0}.dll";
+
+       
     }
 }
