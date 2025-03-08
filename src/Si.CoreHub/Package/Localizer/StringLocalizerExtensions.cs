@@ -22,5 +22,10 @@ namespace Si.CoreHub.Package.Localizer
         {
             return factory.Create(moduleName, moduleName);
         }
+
+        public static IStringLocalizer ForModule<T>(this IStringLocalizerFactory factory)
+        {
+            return factory.Create(typeof(T));
+        }
     }
 } 

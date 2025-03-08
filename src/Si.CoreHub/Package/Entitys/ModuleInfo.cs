@@ -67,7 +67,7 @@ namespace Si.CoreHub.Package.Entitys
         /// <returns>格式化的模块信息字符串</returns>
         public override string ToString()
         {
-            return $"模块: {AssemblyName}, 版本: {Version}, 路径: {AssemblyPath}, 加载状态: {(IsLoaded ? "已加载" : "未加载")}";
+            return $"模块: {AssemblyName}, 版本: {Version}, 加载状态: {(IsLoaded ? "已加载" : "未加载")}";
         }
     }
 }

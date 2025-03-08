@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Si.CoreHub.Extension;
-using Si.CoreHub.Logging;
 using Si.CoreHub.Package.Abstraction;
 using Si.CoreHub.Package.Core;
 using Si.CoreHub.Package.Entitys;
@@ -32,14 +30,8 @@ namespace Si.CoreHub.Package
             }
             if (packOptions.EnableLocaizor)
             {
-                builder.Services.AddLocalization();
+                builder.Services.AddModuleLocalization();
             }
-            LogCenter.Write2Log(Loglevel.Info, $"加载包完成,{finder.GetPacks().Select(x => new
-            {
-                x.AssemblyName,
-                x.AssemblyPath,
-                x.ConfigFile
-            }).ToList().ToJson()}");
         }
 
         /// <summary>
@@ -64,12 +56,11 @@ namespace Si.CoreHub.Package
         /// <summary>
         /// 添加模块化本地化服务
         /// </summary>
-        internal static IServiceCollection AddModuleLocalization(IServiceCollection services)
+        internal static IServiceCollection AddModuleLocalization(this IServiceCollection services)
         {
             // 注册本地化服务
             services.AddSingleton<IStringLocalizerFactory, ModuleStringLocalizerFactory>();
-            services.AddSingleton(typeof(IStringLocalizer<>), typeof(ModuleStringLocalizer<>));
-
+            services.AddScoped(typeof(IStringLocalizer<>), typeof(ModuleStringLocalizer<>));
             // 注册请求本地化中间件
             services.AddLocalization();
 
